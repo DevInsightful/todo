@@ -8,12 +8,11 @@ app.use(cors());
 const port = process.env.PORT || 3200;
 const dbConStr = process.env.DBConnectionStr;
 app.use(express.json());
-console.log(dbConStr);
 mongoose
   .connect(dbConStr)
   .then(() => {
     app.listen(port, (req, res) => {
-      console.log(port);
+      console.log("Connected to database server running at:", port);
     });
   })
   .catch((err) => {

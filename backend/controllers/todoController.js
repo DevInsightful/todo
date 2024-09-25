@@ -32,4 +32,28 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { addTodo, getAll, getById };
+// update a todo
+const updateTodo = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const todo = await todoModel.findByIdAndUpdate({ _id: id },{...req.body});
+    res.status(200).json({ todo });
+  } catch (err) {
+    res.status(404).json({ "error: ": err.message });
+  }
+};
+
+// delete a todo
+const deleteTodo = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const todo = await todoModel.findByIdAndDelete(
+      { _id: id }
+    );
+    res.status(200).json({ todo });
+  } catch (err) {
+    res.status(404).json({ "error: ": err.message });
+  }
+};
+
+module.exports = { addTodo, getAll, getById,updateTodo,deleteTodo };
