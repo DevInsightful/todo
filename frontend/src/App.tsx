@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import Card from "./components/card";
+import DisplayCards from "./components/displayCards";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [data, setData] = useState<any>();
+  const fetchData = async () => {
+    const req = await fetch("http://localhost:3100/");
+    const res = await req.json();
+    setData(res["todos"]);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const display =
+    data &&
+    data.map(({ state, task, createdAt }: any, id: any) => {
+      return <Card key={id} state={state} task={task} createdAt={createdAt} />;
+    });
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {data.map(({ state, task, createdAt, _id }: any) => {
+        return (
+          <DisplayCards
+            key={_id}
+            id={_id}
+            state={state}
+            task={task}
+            createdAt={createdAt}
+          />
+        );
+      })}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
