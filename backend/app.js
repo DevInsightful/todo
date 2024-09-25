@@ -1,9 +1,27 @@
 require("dotenv").config();
 const express = require("express");
-const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
 const router = require("./routes/todoRoutes");
+const app = express();
+app.use(cors());
 const port = process.env.PORT || 3200;
-app.listen(port, (req, res) => {
-  console.log(port);
+const dbConStr = process.env.DBConnectionStr;
+app.use(express.json());
+console.log(dbConStr);
+mongoose
+  .connect(dbConStr)
+  .then(() => {
+    app.listen(port, (req, res) => {
+      console.log(port);
+    });
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
+app.use((req, _res, next) => {
+  console.log(req.method + " " + req.url);
+  next();
 });
 app.use(router);

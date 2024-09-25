@@ -1,4 +1,3 @@
-const { timeStamp } = require("console");
 const mongoose = require("mongoose");
 
 const todoSchema = mongoose.Schema(
@@ -8,4 +7,4 @@ const todoSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.Model("todoModel", todoSchema);
+module.exports = mongoose.model("todoModel", todoSchema);
